@@ -1,0 +1,32 @@
+<section>
+  <div class="head">
+  </div>
+  <div class="container">
+    <div class="right">
+      <div class="form-box">
+        <div class="logo">
+          <img src="../../../../../assets/images/logo.png" alt="logo" />
+        </div>
+        <form [formGroup]="loginForm">
+          <div class="form-field">
+            <input type="email" formControlName="username" placeholder="username">
+          </div>
+          <div class="form-field">
+            <input type="password" formControlName="password" placeholder="password">
+          </div>
+          <button (click)="login($event)">Sign in</button>
+        </form>
+      </div>
+    </div>
+    <div class="left">
+      <div class="text-box">
+        <h2>Design + Collaboration, all in Mockplus</h2>
+        <p>
+          yassin2gmail.com, devs, PMs, and all design parties to
+          Yassin123 duties in unison. At least 200% faster with Mockplus.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>
