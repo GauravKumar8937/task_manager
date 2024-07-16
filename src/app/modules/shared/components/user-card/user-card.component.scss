@@ -20,8 +20,14 @@
   }
 
   .right{
-    .manager{
+    text-align: center;
 
+    p:nth-child(1){
+      @include textStyle(21px, 24px, #000, bold);
+
+    }
+    .manager{
+      @include textStyle(15px, 24px, #4F4F4F, 400);
     }
   }
 }

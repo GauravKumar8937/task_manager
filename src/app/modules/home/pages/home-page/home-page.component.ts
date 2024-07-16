@@ -9,31 +9,44 @@ import { Task } from '../../../core/models/Task';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserCardComponent } from '../../../shared/components/user-card/user-card.component';
 import { UserService } from '../../../core/services/user.service';
+import { AppState } from '../../../../store/App/app.reducer';
+import { Store } from '@ngrx/store';
+import { getAddTaskForm, getAddUserForm } from '../../../../store/App/app.selectors';
+import * as appActions from '../../../../store/App/app.actions'
+import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
+
+
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent],
+  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent , AddTaskFormComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent implements OnInit {
 
-  currentUserRole: string = ''
+  activeTab: number = 1;
+  currentUserRole: string = '';
   currentUser!: User
   tasks$!: Observable<Task[]>
   users$!: Observable<User[]>
-  activeTab: number = 1;
+  showAddUserForm$!: Observable<boolean>
+  showAddTaskForm$!: Observable<boolean>
 
 
   _taskService = inject(TaskService)
   _userService = inject(UserService)
+  _store = inject(Store<AppState>)
+
 
   ngOnInit(): void {
     this.getCurrentUser()
     this.loadTasks()
     this.loadUsers()
 
+    this.showAddUserForm$ =this._store.select(getAddUserForm)
+    this.showAddTaskForm$ =this._store.select(getAddTaskForm)
   }
 
   getCurrentUser() {
@@ -53,13 +66,32 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  loadUsers(){
+  loadUsers() {
     this.users$ = this._userService.getUsers()
   }
 
   selectTab(tabIndex: number): void {
     this.activeTab = tabIndex;
     this.activeTab == 1
+  }
+
+  deleteTask(taskId: number): void {
+    this._taskService.deleteTask(taskId).subscribe({
+      next: (tasks) => {
+        this.tasks$ = this._taskService.getTasks();
+      },
+      error: (error) => {
+        console.error('Error deleting task:', error);
+      }
+    });
+  }
+
+  showAddUserForm(){
+    this._store.dispatch(appActions.toggleAddUserForm())
+  }
+
+  showAddTaskForm(){
+    this._store.dispatch(appActions.toggleAddTaskForm())
   }
 
 }

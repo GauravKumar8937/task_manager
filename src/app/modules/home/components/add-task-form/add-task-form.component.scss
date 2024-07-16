@@ -1,6 +1,6 @@
 @import 'common';
 
-.addUserForm {
+.addTaskForm {
   position: fixed;
   top: 0;
   left: 0;
@@ -32,6 +32,7 @@
       .close_icon {
         padding: 0.5rem;
         border-radius: 10px;
+
         width: 10%;
         display: flex;
         align-items: center;
@@ -106,7 +107,7 @@
 
 @include DesktopScreen {
   :host {
-    .addUserForm {
+    .addTaskForm {
       .container {
         max-width: 500px;
         min-height: 415px;

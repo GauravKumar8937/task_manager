@@ -3,13 +3,13 @@
   <div class="head">
     <!-- <h2>Manage Tasks</h2> -->
     <div>
-      <div class="addTask">
+      <div class="addTask" *ngIf="currentUserRole === 'Manager'"  (click)="showAddTaskForm()">
         <svg>
           <use href="#plus"></use>
         </svg>
         <span>Add task</span>
       </div>
-      <div class="addUser">
+      <div class="addUser" *ngIf="currentUserRole === 'Admin'" (click)="showAddUserForm()">
         <svg>
           <use href="#plus"></use>
         </svg>
@@ -30,7 +30,7 @@
     <div class="tab-content">
       <div class="tasks__container" *ngIf="tasks$ | async as tasks">
         @for(task of tasks; track task){
-        <app-task-card [task]="task"></app-task-card>
+        <app-task-card [task]="task" (deleteTask)="deleteTask(task.id)"></app-task-card>
         }@empty{
         <p>No Task</p>
         }
@@ -40,28 +40,17 @@
     <div class="tab-content">
       <div class="users__container" *ngIf="users$ | async as users">
         @for(user of users; track user){
-          <app-user-card [user]="user" [users]="users"></app-user-card>
-          }@empty{
-          <p>No Task</p>
-          }
+        <app-user-card [user]="user" [users]="users"></app-user-card>
+        }@empty{
+        <p>No Task</p>
+        }
       </div>
     </div>
     }@else {
-      <p>No Data</p>
+    <p>No Data</p>
     }
   </div>
-  <!-- <app-user-form></app-user-form> -->
 
-
-
-
-
-
-
-
-
-
-
-
-
+  <app-user-form *ngIf="showAddUserForm$ | async "></app-user-form>
+  <app-add-task-form *ngIf="showAddTaskForm$ | async "></app-add-task-form>
 </section>

@@ -75,11 +75,15 @@ export class TaskService {
     });
   }
 
-  deleteTask(taskId: number): Observable<void> {
-    return new Observable(observer => {
-      this.tasks = this.tasks.filter(task => task.id !== taskId);
-      observer.next();
-      observer.complete();
+  deleteTask(taskId: number): Observable<Task[]> {
+    return new Observable((observer) => {
+      try {
+        this.tasks = this.tasks.filter(task => task.id !== taskId);
+        observer.next(this.tasks); // Emit the updated task list
+        observer.complete();
+      } catch (error) {
+        observer.error(error);
+      }
     });
   }
 

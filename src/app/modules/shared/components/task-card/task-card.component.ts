@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Task } from '../../../core/models/Task';
 import { CommonModule } from '@angular/common';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
+import { TaskService } from '../../../core/services/task.service';
 
 @Component({
   selector: 'app-task-card',
@@ -13,13 +14,15 @@ import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
 export class TaskCardComponent {
 
   @Input() task!: Task;
+  @Output() deleteTask = new EventEmitter<number>();
 
+  _tasksService =inject(TaskService)
   editTask() {
 
   }
 
-  removeTask() {
-
+  onDeleteClick(): void {
+    this.deleteTask.emit(this.task.id);
   }
 
   getStatusClass(status: TaskStatus): string {

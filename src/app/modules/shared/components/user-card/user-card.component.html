@@ -1,9 +1,10 @@
 <div class="card">
   <div class="left">
     <p class="title">{{user.username}}</p>
-    <p class="role">{{user.role}}</p>
+    <p class="role">Role: {{user.role}}</p>
   </div>
   <div class="right">
+    <p>Manager:</p>
     <p class="manager">{{getUsernameByManagerId(user.managerId ?? -1)}}</p>
   </div>
 </div>
