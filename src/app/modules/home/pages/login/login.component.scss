@@ -85,6 +85,7 @@ section {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            cursor: pointer;
             @include textStyle(16px, 1.5, #000, 600);
             border-radius: 8px;
             border: 0;
@@ -176,12 +177,12 @@ section {
             padding: 1rem;
             text-align: left;
             h2 {
-              @include textStyle(30px, 1.5, #000, 600);
+              @include textStyle(30px, 1.5, #fff, 600);
               padding: 0.5rem 0;
             }
 
             p {
-              @include textStyle(18px, 1.5, #000, 500);
+              @include textStyle(18px, 1.5, #fff, 500);
               padding: 0.5rem 0;
             }
           }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TaskStatus } from '../enums/TaskStatus.enum';
 import { Task } from '../models/Task';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,27 +48,39 @@ export class TaskService {
   ];
 
 
-  getTasks(): Task[] {
-    return this.tasks;
+  getTasks(): Observable<Task[]> {
+    return of(this.tasks);
   }
 
-  getTasksForUser(userId: number): Task[] {
-    return this.tasks.filter(task => task.assignedTo === userId);
+  getTasksForUser(userId: number): Observable<Task[]> {
+    return of(this.tasks.filter(task => task.assignedTo === userId));
   }
 
-  addTask(task: Task): void {
-    this.tasks.push(task);
+  addTask(task: Task): Observable<void> {
+    return new Observable(observer => {
+      this.tasks.push(task);
+      observer.next();
+      observer.complete();
+    });
   }
 
-  updateTask(task: Task): void {
-    const index = this.tasks.findIndex(t => t.id === task.id);
-    if (index !== -1) {
-      this.tasks[index] = task;
-    }
+  updateTask(task: Task): Observable<void> {
+    return new Observable(observer => {
+      const index = this.tasks.findIndex(t => t.id === task.id);
+      if (index !== -1) {
+        this.tasks[index] = task;
+      }
+      observer.next();
+      observer.complete();
+    });
   }
 
-  deleteTask(taskId: number): void {
-    this.tasks = this.tasks.filter(task => task.id !== taskId);
+  deleteTask(taskId: number): Observable<void> {
+    return new Observable(observer => {
+      this.tasks = this.tasks.filter(task => task.id !== taskId);
+      observer.next();
+      observer.complete();
+    });
   }
 
 }

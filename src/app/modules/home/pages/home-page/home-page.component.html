@@ -1,10 +1,67 @@
 <app-header></app-header>
 <section>
   <div class="head">
-    <h2>Manage Tasks</h2>
+    <!-- <h2>Manage Tasks</h2> -->
     <div>
-      <svg><use href="#plus"></use></svg>
-      <span>Add task</span>
+      <div class="addTask">
+        <svg>
+          <use href="#plus"></use>
+        </svg>
+        <span>Add task</span>
+      </div>
+      <div class="addUser">
+        <svg>
+          <use href="#plus"></use>
+        </svg>
+        <span>Add User</span>
+      </div>
     </div>
   </div>
+  <div class="tab-menu">
+    <div class="tab-header">
+      <div [class.active]="activeTab === 1" (click)="selectTab(1)">
+        <span>Tasks</span>
+      </div>
+      <div [class.active]="activeTab === 2" (click)="selectTab(2)">
+        <span>Users</span>
+      </div>
+    </div>
+    @if(activeTab === 1){
+    <div class="tab-content">
+      <div class="tasks__container" *ngIf="tasks$ | async as tasks">
+        @for(task of tasks; track task){
+        <app-task-card [task]="task"></app-task-card>
+        }@empty{
+        <p>No Task</p>
+        }
+      </div>
+    </div>
+    }@else if(activeTab === 2){
+    <div class="tab-content">
+      <div class="users__container" *ngIf="users$ | async as users">
+        @for(user of users; track user){
+          <app-user-card [user]="user" [users]="users"></app-user-card>
+          }@empty{
+          <p>No Task</p>
+          }
+      </div>
+    </div>
+    }@else {
+      <p>No Data</p>
+    }
+  </div>
+  <!-- <app-user-form></app-user-form> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 </section>
