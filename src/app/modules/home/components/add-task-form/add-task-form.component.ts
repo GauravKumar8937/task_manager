@@ -76,6 +76,7 @@ export class AddTaskFormComponent implements OnInit {
         });
       });
       this._toastr.success('Task added successfully');
+      this._store.dispatch(appActions.toggleAddTaskForm())
       return
     }else{
       this._toastr.error('something went wrong');

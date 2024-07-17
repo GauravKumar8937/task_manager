@@ -8,6 +8,7 @@ import { fadeIn } from '../../../core/animation';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
 import * as appActions from '../../../../store/App/app.actions'
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class UserFormComponent implements OnInit {
   _fb = inject(FormBuilder)
   _userService = inject(UserService)
   _store = inject(Store<AppState>)
-
+  _toastr = inject(ToastrService)
 
   ngOnInit(): void {
 
@@ -36,7 +37,7 @@ export class UserFormComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required],
       role: [UserRole.User, Validators.required],
-      managerId: [{ value: '', disabled: true }]
+      managerId: [{ value: 0, disabled: true }]
     });
 
     this.userForm.get('role')?.valueChanges.subscribe(role => {
@@ -54,16 +55,24 @@ export class UserFormComponent implements OnInit {
 
   addUser(): void {
     if (this.userForm.valid) {
-      const newUser: User = this.userForm.value;
+      const formValue = this.userForm.value;
+      const newUser: User = {
+        ...formValue,
+        managerId: Number(formValue.managerId)
+      };
+
       this._userService.addUser(newUser).subscribe(() => {
         this.userForm.reset({
           username: '',
           password: '',
           role: UserRole.User,
-          managerId: { value: '', disabled: true }
+          managerId: { value: 0, disabled: true }
         });
+        this._toastr.success('User added successfully');
+        this._store.dispatch(appActions.toggleAddUserForm());
       });
-      this._store.dispatch(appActions.toggleAddUserForm())
+    } else {
+      this._toastr.error('Something went wrong');
     }
   }
 
