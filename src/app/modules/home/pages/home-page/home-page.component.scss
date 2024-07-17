@@ -17,7 +17,8 @@ section {
       align-items: center;
       gap: 0.3rem;
       margin: 0 auto;
-      .addTask{
+
+      .addTask {
         background: rgb(35, 35, 226);
         padding: 0.5rem 0.7rem;
         border-radius: 12px;
@@ -32,7 +33,8 @@ section {
           height: 15px;
         }
       }
-      .addUser{
+
+      .addUser {
         background: rgb(243, 129, 35);
         padding: 0.5rem 0.7rem;
         border-radius: 12px;
@@ -91,10 +93,10 @@ section {
         padding: 1rem 0;
       }
 
-      .tasks__container{
+      .tasks__container {
         width: 100%;
         padding: 1rem 0;
-        margin:0;
+        margin: 0;
       }
 
       p {
@@ -109,10 +111,12 @@ section {
   :host {
     section {
       padding: 2rem 4rem;
-      .tab-menu{
+
+      .tab-menu {
         padding: 1rem 20%;
       }
-      .tasks__container{
+
+      .tasks__container {
         width: 80%;
         margin: 5% auto;
       }

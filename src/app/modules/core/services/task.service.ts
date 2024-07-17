@@ -47,11 +47,12 @@ export class TaskService {
     }
   ];
 
-
+ // Get All Tasks
   getTasks(): Observable<Task[]> {
     return of(this.tasks);
   }
 
+  // Get Tasks For Specific User
   getTasksForUser(userId: number): Observable<Task[]> {
     return of(this.tasks.filter(task => task.assignedTo === userId));
   }

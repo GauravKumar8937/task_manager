@@ -4,6 +4,7 @@ import { UserRole } from '../enums/userRole.enum';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class AuthService {
 
   _usersService= inject(UserService)
   _router = inject(Router)
+  _toastr = inject(ToastrService)
 
   users: User[] =[]
 
@@ -27,12 +29,6 @@ export class AuthService {
 
 
   login(username: string, password: string): boolean {
-    // const users: User[] = [
-    //   { id: 1, username: 'yassin', password: '123456', role: UserRole.Admin },
-    //   { id: 2, username: 'mohamed', password: '123456', role: UserRole.Manager, managerId: 1 },
-    //   { id: 3, username: 'ali', password: '123456', role: UserRole.User, managerId: 2 },
-    // ];
-
     const user = this.users.find(u => u.username === username && u.password === password);
     if (user) {
       this.currentUserSubject.next(user);
@@ -40,7 +36,7 @@ export class AuthService {
       this._router.navigate(['/']);
       return true;
     } else {
-      console.log('invalid username or password')
+      this._toastr.error('invalid username or password')
     }
     return false;
   }

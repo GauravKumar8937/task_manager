@@ -5,5 +5,5 @@ export interface Task {
   title: string;
   description: string;
   status: TaskStatus;
-  assignedTo?: number; // user id
+  assignedTo?: number; //  <------- user id
 }

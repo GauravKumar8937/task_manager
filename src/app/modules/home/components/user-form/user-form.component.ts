@@ -16,7 +16,7 @@ import * as appActions from '../../../../store/App/app.actions'
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
-  animations:[fadeIn]
+  animations: [fadeIn]
 })
 export class UserFormComponent implements OnInit {
 
@@ -67,7 +67,7 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-  close(){
+  close() {
     this._store.dispatch(appActions.toggleAddUserForm())
   }
 }

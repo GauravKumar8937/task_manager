@@ -7,6 +7,7 @@ import { User } from '../../../core/models/User';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
 import * as appActions from '../../../../store/App/app.actions'
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -20,12 +21,19 @@ export class TaskCardComponent {
 
   @Input() task!: Task | any;
   @Input() users!: User[] | any[];
+  @Input() currentUserRole: string ='';
   @Output() deleteTask = new EventEmitter<number>();
   @Output() editTaskEvent = new EventEmitter<Task>();
 
   _tasksService =inject(TaskService)
   _store =inject(Store<AppState>)
+  _toastr = inject(ToastrService)
+
   editTask(): void {
+    if(this.currentUserRole != 'Manager'){
+      this._toastr.error('You must be a manager to can Edit');
+      return;
+    }
     this.editTaskEvent.emit(this.task);
     this._store.dispatch(appActions.toggleEditTaskForm())
   }

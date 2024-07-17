@@ -15,13 +15,14 @@ import { getAddTaskForm, getAddUserForm, getEditTaskForm } from '../../../../sto
 import * as appActions from '../../../../store/App/app.actions'
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form.component';
+import { ToastrService } from 'ngx-toastr';
 
 
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent , AddTaskFormComponent,EditTaskFormComponent],
+  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent, AddTaskFormComponent, EditTaskFormComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
@@ -41,16 +42,16 @@ export class HomePageComponent implements OnInit {
   _taskService = inject(TaskService)
   _userService = inject(UserService)
   _store = inject(Store<AppState>)
-
+  _toastr = inject(ToastrService)
 
   ngOnInit(): void {
     this.getCurrentUser()
     this.loadTasks()
     this.loadUsers()
 
-    this.showAddUserForm$ =this._store.select(getAddUserForm)
-    this.showAddTaskForm$ =this._store.select(getAddTaskForm)
-    this.showEditTaskForm$ =this._store.select(getEditTaskForm)
+    this.showAddUserForm$ = this._store.select(getAddUserForm)
+    this.showAddTaskForm$ = this._store.select(getAddTaskForm)
+    this.showEditTaskForm$ = this._store.select(getEditTaskForm)
   }
 
   getCurrentUser() {
@@ -76,31 +77,36 @@ export class HomePageComponent implements OnInit {
 
   selectTab(tabIndex: number): void {
     this.activeTab = tabIndex;
-    this.activeTab == 1
   }
 
 
   editTask(task: Task): void {
     this.selectedTaskForEdit = { ...task };
-    console.log('Editing task:', task);
   }
 
   deleteTask(taskId: number): void {
-    this._taskService.deleteTask(taskId).subscribe({
-      next: (tasks) => {
-        this.tasks$ = this._taskService.getTasks();
-      },
-      error: (error) => {
-        console.error('Error deleting task:', error);
-      }
-    });
+    if (this.currentUserRole !== 'Admin') {
+      this._toastr.error('You are not allowed to delete ');
+      return;
+    } else {
+      this._taskService.deleteTask(taskId).subscribe({
+        next: (tasks) => {
+          this.tasks$ = this._taskService.getTasks();
+        },
+        error: (error) => {
+          console.error('Error deleting task:', error);
+          this._toastr.error('Error deleting task')
+        }
+      });
+    }
+
   }
 
-  showAddUserForm(){
+  showAddUserForm() {
     this._store.dispatch(appActions.toggleAddUserForm())
   }
 
-  showAddTaskForm(){
+  showAddTaskForm() {
     this._store.dispatch(appActions.toggleAddTaskForm())
   }
 

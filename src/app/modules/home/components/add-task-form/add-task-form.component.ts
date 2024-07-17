@@ -12,6 +12,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
 import { Task } from '../../../core/models/Task';
 import { UserRole } from '../../../core/enums/userRole.enum';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class AddTaskFormComponent implements OnInit {
   _fb = inject(FormBuilder)
   _taskService = inject(TaskService)
   _userService = inject(UserService)
-  _authService = inject(AuthService)
+  _toastr = inject(ToastrService)
+
 
   ngOnInit(): void {
     this.taskForm = this._fb.group({
@@ -73,6 +75,10 @@ export class AddTaskFormComponent implements OnInit {
           assignedTo: ''
         });
       });
+      this._toastr.success('Task added successfully');
+      return
+    }else{
+      this._toastr.error('something went wrong');
     }
   }
 

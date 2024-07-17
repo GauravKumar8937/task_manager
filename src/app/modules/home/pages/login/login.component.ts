@@ -26,16 +26,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loginForm =
-      this._fb.group({ username: ['',Validators.required], password: ['',Validators.required] })
+    this.loginForm = this._fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    })
 
     this.checkScreenSize();
-    if (this.isDesktop) {
-      setTimeout(() => {
-        this.rightState = 'end';
-        this.leftState = 'visible';
-      }, 1000);
-    }
   }
 
   checkScreenSize() {
@@ -48,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   login(e: Event) {
     e.preventDefault()
-    this._authService.login(this.loginForm.value.username,this.loginForm.value.password)
+    this._authService.login(this.loginForm.value.username, this.loginForm.value.password)
   }
 
 }

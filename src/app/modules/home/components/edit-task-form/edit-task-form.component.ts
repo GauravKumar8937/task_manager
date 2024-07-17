@@ -12,6 +12,7 @@ import { fadeIn } from '../../../core/animation';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
 import * as appActions from '../../../../store/App/app.actions'
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -24,11 +25,9 @@ import * as appActions from '../../../../store/App/app.actions'
 })
 export class EditTaskFormComponent implements OnInit {
 
-  @Input() task!:Task
-
+  @Input() task!: Task
 
   taskForm!: FormGroup
-
   users$!: Observable<User[]>
   tasks$!: Observable<Task[]>
   currentUser!: User | null
@@ -40,7 +39,7 @@ export class EditTaskFormComponent implements OnInit {
   _authService = inject(AuthService)
   _userService = inject(UserService)
   _store = inject(Store<AppState>)
-
+  _toastr = inject(ToastrService)
 
   ngOnInit(): void {
     this.taskForm = this._fb.group({
@@ -64,9 +63,10 @@ export class EditTaskFormComponent implements OnInit {
       };
       this._store.dispatch(appActions.toggleEditTaskForm())
       this._taskService.updateTask(updatedTask).subscribe()
-
-      console.log("updatedTask",updatedTask);
-
+      this._toastr.success('Task updated successfully');
+      return;
+    } else {
+      this._toastr.error('Something went wrong');
     }
   }
 
@@ -84,7 +84,7 @@ export class EditTaskFormComponent implements OnInit {
     this.tasks$ = this._taskService.getTasks();
   }
 
-  close(){
+  close() {
     this._store.dispatch(appActions.toggleEditTaskForm())
   }
 }
