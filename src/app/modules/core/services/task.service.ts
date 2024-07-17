@@ -29,7 +29,7 @@ export class TaskService {
       title: 'Task 3',
       description: 'Description for Task 3',
       status: TaskStatus.ToDo,
-      assignedTo: 2
+      assignedTo: 5
     },
     {
       id: 4,
@@ -43,7 +43,7 @@ export class TaskService {
       title: 'Task 5',
       description: 'Description for Task 5',
       status: TaskStatus.ToDo,
-      assignedTo: 2
+      assignedTo: 5
     }
   ];
 
