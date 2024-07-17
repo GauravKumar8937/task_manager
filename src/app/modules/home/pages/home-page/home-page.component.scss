@@ -109,6 +109,9 @@ section {
   :host {
     section {
       padding: 2rem 4rem;
+      .tab-menu{
+        padding: 1rem 20%;
+      }
       .tasks__container{
         width: 80%;
         margin: 5% auto;

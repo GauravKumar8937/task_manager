@@ -4,11 +4,13 @@ import * as appActions from './app.actions'
 export interface AppState {
   toggleAddUserForm:boolean
   toggleAddTaskForm:boolean
+  toggleEditTaskForm:boolean
 }
 
 const initState= {
   toggleAddUserForm:false,
   toggleAddTaskForm:false,
+  toggleEditTaskForm:false,
 }
 
 export const appReducer = createReducer(initState,
@@ -23,5 +25,12 @@ export const appReducer = createReducer(initState,
       ...state,
       toggleAddTaskForm:!state.toggleAddTaskForm
     }
-  })
+  }),
+  on(appActions.toggleEditTaskForm,(state:AppState)=>{
+    return{
+      ...state,
+      toggleEditTaskForm:!state.toggleEditTaskForm
+    }
+  }),
+
 )

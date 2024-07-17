@@ -11,20 +11,20 @@ export class UserService {
   private users: User[] = [
     {
       id: 1,
-      username: 'Yassin',
+      username: 'yassin',
       password: '123456',
       role: UserRole.Admin
     },
     {
       id: 2,
-      username: 'Mohamed',
+      username: 'mohamed',
       password: '123456',
       role: UserRole.Manager,
       managerId: 1
     },
     {
       id: 3,
-      username: 'Khaled',
+      username: 'khaled',
       password: '123456',
       role: UserRole.Manager,
       managerId: 2
@@ -38,7 +38,7 @@ export class UserService {
     },
     {
       id: 5,
-      username: 'Ali',
+      username: 'ali',
       password: '123456',
       role: UserRole.User,
       managerId: 2

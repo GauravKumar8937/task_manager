@@ -79,7 +79,7 @@ export class TaskService {
     return new Observable((observer) => {
       try {
         this.tasks = this.tasks.filter(task => task.id !== taskId);
-        observer.next(this.tasks); // Emit the updated task list
+        observer.next(this.tasks);
         observer.complete();
       } catch (error) {
         observer.error(error);

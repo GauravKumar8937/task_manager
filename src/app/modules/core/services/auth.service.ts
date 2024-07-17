@@ -3,27 +3,37 @@ import { User } from '../models/User';
 import { UserRole } from '../enums/userRole.enum';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  _usersService= inject(UserService)
+  _router = inject(Router)
+
+  users: User[] =[]
 
   currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  _router = inject(Router)
+  constructor(){
+    this._usersService.getUsers().subscribe(users =>{
+      this.users = users;
+    })
+  }
+
+
 
   login(username: string, password: string): boolean {
-    const users: User[] = [
-      { id: 1, username: 'yassin', password: '123456', role: UserRole.Admin },
-      { id: 2, username: 'mohamed', password: '123456', role: UserRole.Manager, managerId: 1 },
-      { id: 3, username: 'ali', password: '123456', role: UserRole.User, managerId: 2 },
-    ];
+    // const users: User[] = [
+    //   { id: 1, username: 'yassin', password: '123456', role: UserRole.Admin },
+    //   { id: 2, username: 'mohamed', password: '123456', role: UserRole.Manager, managerId: 1 },
+    //   { id: 3, username: 'ali', password: '123456', role: UserRole.User, managerId: 2 },
+    // ];
 
-    const user = users.find(u => u.username === username && u.password === password);
+    const user = this.users.find(u => u.username === username && u.password === password);
     if (user) {
       this.currentUserSubject.next(user);
       localStorage.setItem('currentUser', JSON.stringify(user));
@@ -41,13 +51,5 @@ export class AuthService {
     this._router.navigate(['/login']);
   }
 
-  getCurrentUser(): User | null {
-    return this.currentUserSubject.getValue();
-  }
-
-  getCurrentUserRole(): string {
-    const currentUser = this.getCurrentUser();
-    return currentUser ? currentUser.role : '';
-  }
 }
 

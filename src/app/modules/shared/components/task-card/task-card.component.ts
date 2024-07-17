@@ -3,6 +3,11 @@ import { Task } from '../../../core/models/Task';
 import { CommonModule } from '@angular/common';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
 import { TaskService } from '../../../core/services/task.service';
+import { User } from '../../../core/models/User';
+import { AppState } from '../../../../store/App/app.reducer';
+import { Store } from '@ngrx/store';
+import * as appActions from '../../../../store/App/app.actions'
+
 
 @Component({
   selector: 'app-task-card',
@@ -13,12 +18,16 @@ import { TaskService } from '../../../core/services/task.service';
 })
 export class TaskCardComponent {
 
-  @Input() task!: Task;
+  @Input() task!: Task | any;
+  @Input() users!: User[] | any[];
   @Output() deleteTask = new EventEmitter<number>();
+  @Output() editTaskEvent = new EventEmitter<Task>();
 
   _tasksService =inject(TaskService)
-  editTask() {
-
+  _store =inject(Store<AppState>)
+  editTask(): void {
+    this.editTaskEvent.emit(this.task);
+    this._store.dispatch(appActions.toggleEditTaskForm())
   }
 
   onDeleteClick(): void {
@@ -38,6 +47,10 @@ export class TaskCardComponent {
       default:
         return '';
     }
+  }
 
+  getTaskAssigneeUser(task: Task): string | undefined {
+    const user = this.users.find(user => user.id === task.assignedTo);
+    return user?.username;
   }
 }

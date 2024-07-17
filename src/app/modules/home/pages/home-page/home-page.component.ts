@@ -4,23 +4,24 @@ import { TaskCardComponent } from '../../../shared/components/task-card/task-car
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../../core/services/task.service';
 import { User } from '../../../core/models/User';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Task } from '../../../core/models/Task';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
 import { UserCardComponent } from '../../../shared/components/user-card/user-card.component';
 import { UserService } from '../../../core/services/user.service';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
-import { getAddTaskForm, getAddUserForm } from '../../../../store/App/app.selectors';
+import { getAddTaskForm, getAddUserForm, getEditTaskForm } from '../../../../store/App/app.selectors';
 import * as appActions from '../../../../store/App/app.actions'
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
+import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form.component';
 
 
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent , AddTaskFormComponent],
+  imports: [HeaderComponent, TaskCardComponent, CommonModule, UserFormComponent, UserCardComponent , AddTaskFormComponent,EditTaskFormComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'
 })
@@ -29,10 +30,12 @@ export class HomePageComponent implements OnInit {
   activeTab: number = 1;
   currentUserRole: string = '';
   currentUser!: User
+  selectedTaskForEdit!: Task;
   tasks$!: Observable<Task[]>
   users$!: Observable<User[]>
   showAddUserForm$!: Observable<boolean>
   showAddTaskForm$!: Observable<boolean>
+  showEditTaskForm$: Observable<boolean> = of(false)
 
 
   _taskService = inject(TaskService)
@@ -47,6 +50,7 @@ export class HomePageComponent implements OnInit {
 
     this.showAddUserForm$ =this._store.select(getAddUserForm)
     this.showAddTaskForm$ =this._store.select(getAddTaskForm)
+    this.showEditTaskForm$ =this._store.select(getEditTaskForm)
   }
 
   getCurrentUser() {
@@ -73,6 +77,12 @@ export class HomePageComponent implements OnInit {
   selectTab(tabIndex: number): void {
     this.activeTab = tabIndex;
     this.activeTab == 1
+  }
+
+
+  editTask(task: Task): void {
+    this.selectedTaskForEdit = { ...task };
+    console.log('Editing task:', task);
   }
 
   deleteTask(taskId: number): void {

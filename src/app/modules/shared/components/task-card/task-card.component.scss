@@ -4,7 +4,7 @@
 .task__card{
   width: 100%;
   padding: 1rem 0.5rem;
-  height: 90px;
+  height: 100px;
   margin: 0.3rem 0;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -20,6 +20,13 @@
     .description{
       @include textStyle(14px, 20px, #00000079, 500);
       padding: 0.3rem 0
+    }
+    .assignedTo{
+      @include textStyle(14px, 20px, #00000079, 500);
+      padding: 0.3rem 0;
+      span{
+        color: brown;
+      }
     }
   }
 

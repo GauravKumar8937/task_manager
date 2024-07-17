@@ -1,5 +1,5 @@
 <app-header></app-header>
-<section>
+<section *ngIf="users$ | async as users">
   <div class="head">
     <!-- <h2>Manage Tasks</h2> -->
     <div>
@@ -30,7 +30,7 @@
     <div class="tab-content">
       <div class="tasks__container" *ngIf="tasks$ | async as tasks">
         @for(task of tasks; track task){
-        <app-task-card [task]="task" (deleteTask)="deleteTask(task.id)"></app-task-card>
+        <app-task-card [task]="task" [users]="users"  (editTaskEvent)="editTask($event)" (deleteTask)="deleteTask(task.id)"></app-task-card>
         }@empty{
         <p>No Task</p>
         }
@@ -38,7 +38,7 @@
     </div>
     }@else if(activeTab === 2){
     <div class="tab-content">
-      <div class="users__container" *ngIf="users$ | async as users">
+      <div class="users__container">
         @for(user of users; track user){
         <app-user-card [user]="user" [users]="users"></app-user-card>
         }@empty{
@@ -53,4 +53,8 @@
 
   <app-user-form *ngIf="showAddUserForm$ | async "></app-user-form>
   <app-add-task-form *ngIf="showAddTaskForm$ | async "></app-add-task-form>
+  <app-edit-task-form
+    *ngIf="showEditTaskForm$ | async"
+    [task]="selectedTaskForEdit"
+  ></app-edit-task-form>
 </section>
