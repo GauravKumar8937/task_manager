@@ -9,40 +9,7 @@ import { Observable, of } from 'rxjs';
 export class UserService {
 
   private users: User[] = [
-    {
-      id: 1,
-      username: 'yassin',
-      password: '123456',
-      role: UserRole.Admin
-    },
-    {
-      id: 2,
-      username: 'mohamed',
-      password: '123456',
-      role: UserRole.Manager,
-      managerId: 1
-    },
-    {
-      id: 3,
-      username: 'khaled',
-      password: '123456',
-      role: UserRole.Manager,
-      managerId: 2
-    },
-    {
-      id: 4,
-      username: 'kariem',
-      password: '123456',
-      role: UserRole.User,
-      managerId: 1
-    },
-    {
-      id: 5,
-      username: 'ali',
-      password: '123456',
-      role: UserRole.User,
-      managerId: 2
-    }
+    
   ];
 
   getUsers(): Observable<User[]> {
